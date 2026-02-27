@@ -67,4 +67,4 @@ jobs:
           IMAGE_DIGEST: ${{ steps.build-push.outputs.digest }}
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
         run: |
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${IMAGE_NAME}@${IMAGE_DIGEST}"
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/${IMAGE_NAME}@${IMAGE_DIGEST}"
