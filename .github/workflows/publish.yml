@@ -60,10 +60,22 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+
+      - name: Get digest
+        id: get-digest
+        env:
+          IMAGE_TO_SIGN: ${{ inputs.image }}
+        run: |
+          digest=$(skopeo inspect docker://${REGISTRY}/${IMAGE_NAME}:latest --format '{{.Digest}}')
+          name=$(skopeo inspect docker://${REGISTRY}/${IMAGE_NAME}:latest --format '{{.Name}}')
+          echo "DIGEST=$digest" >> $GITHUB_OUTPUT
+          echo "NAME=$name" >> $GITHUB_OUTPUT
+
       - name: Sign the published images
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
-          DIGEST: ${{ steps.build-push.outputs.digest }}
+          IMAGE_NAME: ${{ steps.get-digest.outputs.NAME }}
+          IMAGE_DIGEST: ${{ steps.get-digest.outputs.DIGEST }}
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
         run: |
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/${IMAGE_NAME}:latest"
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY --new-bundle-format=false "${IMAGE_NAME}@${IMAGE_DIGEST}"
