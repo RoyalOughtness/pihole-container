@@ -64,5 +64,6 @@ jobs:
         env:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.build-push.outputs.digest }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
         run: |
-          cosign sign --yes "${REGISTRY}/${IMAGE_NAME}:latest@${DIGEST}"
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/${IMAGE_NAME}:latest@${DIGEST}"
