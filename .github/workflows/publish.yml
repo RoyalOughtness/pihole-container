@@ -78,4 +78,4 @@ jobs:
           IMAGE_DIGEST: ${{ steps.get-digest.outputs.DIGEST }}
           COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
         run: |
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY --new-bundle-format=false "${IMAGE_NAME}@${IMAGE_DIGEST}"
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${IMAGE_NAME}@${IMAGE_DIGEST}"
