@@ -10,6 +10,7 @@ permissions: {}
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: RoyalOughtness/pihole
+  TAG: 2026.02.0
 
 jobs:
   build-and-push:
@@ -43,6 +44,9 @@ jobs:
         uses: docker/metadata-action@c299e40c65443455700f0fdfc63efafe5b349051 # v5.10.0
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            ${{ env.TAG }}
+            latest
 
       - name: Build and push
         id: build-push
@@ -60,4 +64,4 @@ jobs:
           TAGS: ${{ steps.meta.outputs.tags }}
           DIGEST: ${{ steps.build-push.outputs.digest }}
         run: |
-          cosign sign --yes "${REGISTRY}/${IMAGE_NAME}@${DIGEST}"
+          cosign sign --yes "${REGISTRY}/${IMAGE_NAME}:latest@${DIGEST}"
