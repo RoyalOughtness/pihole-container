@@ -1,4 +1,4 @@
-FROM pihole/pihole:2026.02.0@sha256:ee348529cea9601df86ad94d62a39cad26117e1eac9e82d8876aa0ec7fe1ba27
+FROM pihole/pihole:2026.02.0@sha256:b34823c603c8c8d36a32e90e42fc95bff864f37d44b87d3d8130b32b9978b0aa
 
 LABEL org.opencontainers.image.source=https://github.com/royaloughtness/pihole-container
 LABEL org.opencontainers.image.description="Pi-hole with hardened_malloc"
