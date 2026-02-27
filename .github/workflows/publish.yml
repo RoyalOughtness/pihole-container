@@ -24,9 +24,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
-      - name: Install Cosign
-        uses: sigstore/cosign-installer@faadad0cce49287aee09b3a48701e75088a2c6ad # v4.0.0
-
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
 
@@ -59,11 +56,12 @@ jobs:
           platforms: linux/amd64,linux/arm64
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-
-      - name: Sign the published images
-        env:
-          TAGS: ${{ steps.meta.outputs.tags }}
-          IMAGE_NAME: ${{ env.IMAGE_NAME }}
-          COSIGN_PRIVATE_KEY: ${{ secrets.SIGNING_KEY }}
-        run: |
-          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${REGISTRY}/${IMAGE_NAME}@latest"
+          
+      - name: Sign container
+        uses: EyeCantCU/cosign-action/sign@58722a084c82190b57863002d494c91eabbe9e79 # v0.3.0
+        with:
+          containers: pihole
+          registry: ghcr.io/royaloughtness
+          registry-token: ${{ secrets.GITHUB_TOKEN }}
+          signing-secret: ${{ secrets.SIGNING_KEY }}
+          tags: latest
