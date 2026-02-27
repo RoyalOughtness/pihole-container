@@ -9,7 +9,7 @@ permissions: {}
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: RoyalOughtness/pihole
+  IMAGE_NAME: royaloughtness/pihole
   TAG: 2026.02.0
 
 jobs:
