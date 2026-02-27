@@ -18,6 +18,7 @@ jobs:
     permissions:
       contents: read     # To checkout the repo
       packages: write    # To push to GHCR
+      id-token: write    # keyless signing
 
     steps:
       - name: Checkout repository
